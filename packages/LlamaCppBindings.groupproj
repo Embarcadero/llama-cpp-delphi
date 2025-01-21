@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{4393AAEC-1CA8-4DFA-82FE-C3984AE5D33A}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="LlamaCpp.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\Test\LlamaCppTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="LlamaCpp">
+        <MSBuild Projects="LlamaCpp.dproj"/>
+    </Target>
+    <Target Name="LlamaCpp:Clean">
+        <MSBuild Projects="LlamaCpp.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LlamaCpp:Make">
+        <MSBuild Projects="LlamaCpp.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LlamaCppTests">
+        <MSBuild Projects="..\Test\LlamaCppTests.dproj"/>
+    </Target>
+    <Target Name="LlamaCppTests:Clean">
+        <MSBuild Projects="..\Test\LlamaCppTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LlamaCppTests:Make">
+        <MSBuild Projects="..\Test\LlamaCppTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="LlamaCpp;LlamaCppTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="LlamaCpp:Clean;LlamaCppTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="LlamaCpp:Make;LlamaCppTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

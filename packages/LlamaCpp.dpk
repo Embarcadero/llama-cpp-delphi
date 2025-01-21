@@ -1,0 +1,113 @@
+package LlamaCpp;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  dbrtl,
+  FireDAC,
+  FireDACCommonDriver,
+  FireDACCommon,
+  FireDACSqliteDriver,
+  fmxFireDAC;
+
+contains
+  LlamaCpp.Api.Llama in '..\src\Api\LlamaCpp.Api.Llama.pas',
+  LlamaCpp.Api in '..\src\Api\LlamaCpp.Api.pas',
+  LlamaCpp.Api.Ggml in '..\src\Api\LlamaCpp.Api.Ggml.pas',
+  LlamaCpp.Api.Llava in '..\src\Api\LlamaCpp.Api.Llava.pas',
+  LlamaCpp.Wrapper.LlamaModel in '..\src\Wrapper\LlamaCpp.Wrapper.LlamaModel.pas',
+  LlamaCpp.CType.Ggml.Backend in '..\src\CType\Ggml\LlamaCpp.CType.Ggml.Backend.pas',
+  LlamaCpp.CType.Ggml.Cpu in '..\src\CType\Ggml\LlamaCpp.CType.Ggml.Cpu.pas',
+  LlamaCpp.CType.Ggml in '..\src\CType\Ggml\LlamaCpp.CType.Ggml.pas',
+  LlamaCpp.CType.Llama in '..\src\CType\Llama\LlamaCpp.CType.Llama.pas',
+  LlamaCpp.CType.Llava in '..\src\CType\Llava\LlamaCpp.CType.Llava.pas',
+  LlamaCpp.Wrapper.LlamaContext in '..\src\Wrapper\LlamaCpp.Wrapper.LlamaContext.pas',
+  LlamaCpp.Wrapper.LlamaBatch in '..\src\Wrapper\LlamaCpp.Wrapper.LlamaBatch.pas',
+  LlamaCpp.Common.Sampling.Params in '..\src\Common\Sampling\LlamaCpp.Common.Sampling.Params.pas',
+  LlamaCpp.Common.Sampling.Context in '..\src\Common\Sampling\LlamaCpp.Common.Sampling.Context.pas',
+  LlamaCpp.Helper in '..\src\LlamaCpp.Helper.pas',
+  LlamaCpp.Common.Sampling.CustomSampler in '..\src\Common\Sampling\LlamaCpp.Common.Sampling.CustomSampler.pas',
+  LlamaCpp.Common.Sampling.Sampler in '..\src\Common\Sampling\LlamaCpp.Common.Sampling.Sampler.pas',
+  LlamaCpp.Common.Tokenizer.Base in '..\src\Common\Tokenizer\LlamaCpp.Common.Tokenizer.Base.pas',
+  LlamaCpp.Common.Tokenizer in '..\src\Common\Tokenizer\LlamaCpp.Common.Tokenizer.pas',
+  LlamaCpp.Common.Cache.Base in '..\src\Common\Cache\LlamaCpp.Common.Cache.Base.pas',
+  LlamaCpp.Common.State in '..\src\Common\LlamaCpp.Common.State.pas',
+  LlamaCpp.Common.Cache.Ram in '..\src\Common\Cache\LlamaCpp.Common.Cache.Ram.pas',
+  LlamaCpp.Common.Cache.Disk in '..\src\Common\Cache\LlamaCpp.Common.Cache.Disk.pas',
+  LlamaCpp.Llama in '..\src\LlamaCpp.Llama.pas',
+  LlamaCpp.Common.TokenArray in '..\src\Common\LlamaCpp.Common.TokenArray.pas',
+  LlamaCpp.Common.Chat.Format in '..\src\Common\Chat\LlamaCpp.Common.Chat.Format.pas',
+  LlamaCpp.Common.Chat.Types in '..\src\Common\Chat\LlamaCpp.Common.Chat.Types.pas',
+  LlamaCpp.Common.Types in '..\src\Common\LlamaCpp.Common.Types.pas',
+  LlamaCpp.Common.Grammar in '..\src\Common\Grammar\LlamaCpp.Common.Grammar.pas',
+  LlamaCpp.Common.Processor.LogitsScore in '..\src\Common\Processor\LlamaCpp.Common.Processor.LogitsScore.pas',
+  LlamaCpp.Common.Processor.StoppingCriteria in '..\src\Common\Processor\LlamaCpp.Common.Processor.StoppingCriteria.pas',
+  LlamaCpp.Common.Speculative.LookupDecoding in '..\src\Common\Speculative\LlamaCpp.Common.Speculative.LookupDecoding.pas',
+  LlamaCpp.Common.Chat.Completion.Collection in '..\src\Common\Chat\Completion\LlamaCpp.Common.Chat.Completion.Collection.pas',
+  LlamaCpp.Common.Chat.Formatter.Adapter in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Adapter.pas',
+  LlamaCpp.Common.Settings in '..\src\Common\LlamaCpp.Common.Settings.pas',
+  LlamaCpp.Common.Chat.Formatter.Llama2 in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Llama2.pas',
+  LlamaCpp.Common.Chat.Formatter.Registration in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Registration.pas',
+  LlamaCpp.Tokenization in '..\src\LlamaCpp.Tokenization.pas',
+  LlamaCpp.Evaluator in '..\src\LlamaCpp.Evaluator.pas',
+  LlamaCpp.Sampler in '..\src\LlamaCpp.Sampler.pas',
+  LlamaCpp.Types in '..\src\LlamaCpp.Types.pas',
+  LlamaCpp.Generator in '..\src\LlamaCpp.Generator.pas',
+  LlamaCpp.Embedding in '..\src\LlamaCpp.Embedding.pas',
+  LlamaCpp.Completion in '..\src\LlamaCpp.Completion.pas',
+  LlamaCpp.ChatCompletion in '..\src\LlamaCpp.ChatCompletion.pas',
+  LlamaCpp.Exception in '..\src\LlamaCpp.Exception.pas',
+  LlamaCpp.Common.Chat.Formatter.Llama3 in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Llama3.pas',
+  LlamaCpp.Common.Chat.Formatter.Alpaca in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Alpaca.pas',
+  LlamaCpp.Common.Chat.Formatter.Qwen in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Qwen.pas',
+  LlamaCpp.Common.Chat.Formatter.Vicuna in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Vicuna.pas',
+  LlamaCpp.Common.Chat.Formatter.OasstLlama in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.OasstLlama.pas',
+  LlamaCpp.Common.Chat.Formatter.Baichuan2 in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Baichuan2.pas',
+  LlamaCpp.Common.Chat.Formatter.Baichuan in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Baichuan.pas',
+  LlamaCpp.Common.Chat.Formatter.OpenBuddy in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.OpenBuddy.pas',
+  LlamaCpp.Common.Chat.Formatter.RedpajamaIncite in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.RedpajamaIncite.pas',
+  LlamaCpp.Common.Chat.Formatter.Snoozy in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Snoozy.pas',
+  LlamaCpp.Common.Chat.Formatter.Phind in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Phind.pas',
+  LlamaCpp.Common.Chat.Formatter.Intel in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Intel.pas',
+  LlamaCpp.Common.Chat.Formatter.OpenOrca in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.OpenOrca.pas',
+  LlamaCpp.Common.Chat.Formatter.MilstralLite in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.MilstralLite.pas',
+  LlamaCpp.Common.Chat.Formatter.Zephyr in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Zephyr.pas',
+  LlamaCpp.Common.Chat.Formatter.Pygmalion in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Pygmalion.pas',
+  LlamaCpp.Common.Chat.Formatter.Chatml in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Chatml.pas',
+  LlamaCpp.Common.Chat.Formatter.MistralInstruct in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.MistralInstruct.pas',
+  LlamaCpp.Common.Chat.Formatter.ChatGLM3 in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.ChatGLM3.pas',
+  LlamaCpp.Common.Chat.Formatter.OpenChat in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.OpenChat.pas',
+  LlamaCpp.Common.Chat.Formatter.Saiga in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Saiga.pas',
+  LlamaCpp.Common.Chat.Formatter.Gemma in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Gemma.pas',
+  LlamaCpp.Download in '..\src\LlamaCpp.Download.pas',
+  LlamaCpp.Common.Chat.Formatter.Jinja2 in '..\src\Common\Chat\Formatter\LlamaCpp.Common.Chat.Formatter.Jinja2.pas';
+
+end.
+
+
