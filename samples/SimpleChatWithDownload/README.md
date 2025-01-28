@@ -57,7 +57,7 @@ You must have Git installed on your machine to clone model repositories.
 
 - Click the **hamburger menu** to start downloading the selected model.
 - Supported Models:
-  - **Llama-2**: ~7 GB (7B.Q4_K_M).
+  - **Llama-2**: ~4 GB (7B.Q4_K_M).
   - **Llama-3**: ~5 GB (30B.Q4_K_M).
   - **Mistral Lite**: ~7 GB (7B.Q4_K_M).
   - 🔧 You can also use any GGUF-compatible models with Llama.cpp.
