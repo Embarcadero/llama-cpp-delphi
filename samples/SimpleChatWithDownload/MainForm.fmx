@@ -956,8 +956,8 @@ object FormMain: TFormMain
         StyleLookup = 'memotransparent'
         TabOrder = 2
         OnKeyUp = memUserKeyUp
-        Viewport.Width = 662.000000000000000000
-        Viewport.Height = 81.000000000000000000
+        Viewport.Width = 654.000000000000000000
+        Viewport.Height = 73.000000000000000000
       end
       object btnCancel: TButton
         Anchors = [akRight, akBottom]
@@ -1061,7 +1061,7 @@ object FormMain: TFormMain
       object cbModel: TComboBox
         Align = Top
         Items.Strings = (
-          'Llama 2 (~7 GB)'
+          'Llama 2 (~4 GB)'
           'Llama 3 (~5 GB)'
           'Mistral Lite (~7 GB)')
         Margins.Left = 5.000000000000000000
