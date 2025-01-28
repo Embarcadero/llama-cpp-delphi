@@ -1,0 +1,33 @@
+object FormDownload: TFormDownload
+  Left = 0
+  Top = 0
+  Caption = 'Clone and Load Model'
+  ClientHeight = 280
+  ClientWidth = 400
+  Position = MainFormCenter
+  Constraints.MaxHeight = 280.000000000000000000
+  Constraints.MaxWidth = 400.000000000000000000
+  Constraints.MinHeight = 280.000000000000000000
+  Constraints.MinWidth = 400.000000000000000000
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object memoDownload: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    ReadOnly = True
+    Align = Client
+    Size.Width = 400.000000000000000000
+    Size.Height = 280.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Viewport.Width = 396.000000000000000000
+    Viewport.Height = 276.000000000000000000
+  end
+  object LlamaDownload1: TLlamaDownload
+    OnWriteData = LlamaDownload1WriteData
+    Left = 184
+    Top = 120
+  end
+end

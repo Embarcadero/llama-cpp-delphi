@@ -6,6 +6,9 @@
         <Projects Include="LlamaCpp.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="dclLlamaCpp.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="..\Test\LlamaCppTests.dproj">
             <Dependencies/>
         </Projects>
@@ -26,6 +29,15 @@
     <Target Name="LlamaCpp:Make">
         <MSBuild Projects="LlamaCpp.dproj" Targets="Make"/>
     </Target>
+    <Target Name="dclLlamaCpp">
+        <MSBuild Projects="dclLlamaCpp.dproj"/>
+    </Target>
+    <Target Name="dclLlamaCpp:Clean">
+        <MSBuild Projects="dclLlamaCpp.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclLlamaCpp:Make">
+        <MSBuild Projects="dclLlamaCpp.dproj" Targets="Make"/>
+    </Target>
     <Target Name="LlamaCppTests">
         <MSBuild Projects="..\Test\LlamaCppTests.dproj"/>
     </Target>
@@ -36,13 +48,13 @@
         <MSBuild Projects="..\Test\LlamaCppTests.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="LlamaCpp;LlamaCppTests"/>
+        <CallTarget Targets="LlamaCpp;dclLlamaCpp;LlamaCppTests"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LlamaCpp:Clean;LlamaCppTests:Clean"/>
+        <CallTarget Targets="LlamaCpp:Clean;dclLlamaCpp:Clean;LlamaCppTests:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LlamaCpp:Make;LlamaCppTests:Make"/>
+        <CallTarget Targets="LlamaCpp:Make;dclLlamaCpp:Make;LlamaCppTests:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -318,8 +318,8 @@ class function TScoresHelper.Scores(const AScores: TArray<TArray<single>>;
 var
   I: Integer;
 begin
-  SetLength(Result, ANumberOfTokens + 1);
-  for I := Low(AScores) to ANumberOfTokens do
+  SetLength(Result, Min(High(AScores), ANumberOfTokens) + 1);
+  for I := Low(AScores) to High(Result) do
   begin
     SetLength(Result[I], Length(AScores[I]));
     TArray.Copy<single>(

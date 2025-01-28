@@ -30,7 +30,7 @@ uses
   LlamaCpp.Common.Processor.StoppingCriteria,
   LlamaCpp.Common.Chat.Types,
   LlamaCpp.Common.Sampling.Sampler,
-  LlamaCpp.Types;
+  LlamaCpp.Types, System.Types;
 
 type
   // Settings
@@ -48,6 +48,10 @@ type
   TLlamaPromptLookupDecoding = LlamaCpp.Common.Speculative.LookupDecoding.TLlamaPromptLookupDecoding;
   // Grammar
   TLlamaGrammar = LlamaCpp.Common.Grammar.TLlamaGrammar;
+  // Chat and completion
+  TCreateCompletionResponse = LlamaCpp.Common.Chat.Types.TCreateCompletionResponse;
+  TChatCompletionStreamResponse = LlamaCpp.Common.Chat.Types.TChatCompletionStreamResponse;
+  TChatCompletionRequestMessage = LlamaCpp.Common.Chat.Types.TChatCompletionRequestMessage;
 
   TLlamaBase = class(
     TInterfacedObject,
@@ -160,22 +164,60 @@ type
       const ACache: ILlamaCache = nil);
   end;
 
+  TLlamaLoadModel = procedure(
+          Sender: TObject;
+      var AModelPath: string;
+    const ASettings: TLlamaSettings) of object;
+
+  TLLamaCompletionStream = procedure(
+          Sender: TObject;
+    const AResponse: TCreateCompletionResponse;
+      var AContinue: boolean) of object;
+
+  TLlamaChatCompletionStream = procedure(
+          Sender: TObject;
+    const AResponse: TChatCompletionStreamResponse;
+      var AContinue: boolean) of object;
+  TLlamaChatCompletionStreamComplete = procedure(Sender: TObject) of object;
+
+  [ComponentPlatforms(pfidWindows or pfidOSX or pfidLinux)]
   TLlama = class(TComponent)
   private
     FLlamaBase: ILlama;
     FAutoLoad: boolean;
     FModelPath: string;
     FSettings: TLlamaSettings;
+    FDraftModel: ILlamaDraftModel;
+    FTokenizer: ILlamaTokenizer;
+    FCache: ILlamaCache;
+    FChatHandler: ILlamaChatCompletionHandler;
+    FOnLoadModel: TLlamaLoadModel;
+    FOnCompletionStream: TLlamaCompletionStream;
+    FOnChatCompletionStream: TLlamaChatCompletionStream;
+    FOnChatCompletionStreamComplete: TLlamaChatCompletionStreamComplete;
     procedure SetSettings(const Value: TLlamaSettings);
+  protected
+    procedure Loaded(); override;
+  protected type
+    TLlamaTaskAsyncResult = class(TBaseAsyncResult)
+    private
+      FTask: TProc;
+      FCallback: TProc;
+      FCancelled: PBoolean;
+    protected
+      procedure Complete(); override;
+      procedure Schedule(); override;
+      procedure AsyncDispatch(); override;
+      function DoCancel(): boolean; override;
+    public
+      constructor Create(const ATask, ACallback: TProc;
+        const ACancelled: PBoolean);
+    end;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy(); override;
 
-    procedure Init(
-      const ATokenizer: ILlamaTokenizer = nil;
-      const AChatHandler: ILlamaChatCompletionHandler = nil;
-      const ADraftModel: ILlamaDraftModel = nil;
-      const ACache: ILlamaCache = nil);
+    procedure Init();
 
     // Tokenization
     function Tokenize(
@@ -249,14 +291,44 @@ type
       const AStoppingCriteria: IStoppingCriteriaList = nil;
       const ALogitsProcessor: ILogitsProcessorList = nil;
       const AGrammar: ILlamaGrammar = nil); overload;
+    procedure CreateCompletionStream(
+      const ATokens: TArray<integer>;
+            ASettings: TLlamaCompletionSettings;
+      const AStoppingCriteria: IStoppingCriteriaList = nil;
+      const ALogitsProcessor: ILogitsProcessorList = nil;
+      const AGrammar: ILlamaGrammar = nil); overload;
     // Chat Completion
     function CreateChatCompletion(
-      const ASettings: TLlamaChatCompletionSettings)
-      : TCreateChatCompletionResponse;
+      const ASettings: TLlamaChatCompletionSettings;
+      const AStoppingCriteria: IStoppingCriteriaList = nil;
+      const ALogitsProcessor: ILogitsProcessorList = nil;
+      const AGrammar: ILlamaGrammar = nil)
+      : TCreateChatCompletionResponse; overload;
+    procedure CreateChatCompletion(
+      const ASettings: TLlamaChatCompletionSettings;
+      const ACallback: TChatCompletionCallback;
+      const AStoppingCriteria: IStoppingCriteriaList = nil;
+      const ALogitsProcessor: ILogitsProcessorList = nil;
+      const AGrammar: ILlamaGrammar = nil); overload;
+    function CreateChatCompletionStream(
+      const ASettings: TLlamaChatCompletionSettings;
+      const AStoppingCriteria: IStoppingCriteriaList = nil;
+      const ALogitsProcessor: ILogitsProcessorList = nil;
+      const AGrammar: ILlamaGrammar = nil): IAsyncResult;
   published
     property AutoLoad: boolean read FAutoLoad write FAutoLoad default false;
     property ModelPath: string read FModelPath write FModelPath;
     property Settings: TLlamaSettings read FSettings write SetSettings;
+
+    property Tokenizer: ILlamaTokenizer read FTokenizer write FTokenizer;
+    property ChatHandler: ILlamaChatCompletionHandler read FChatHandler write FChatHandler;
+    property DraftModel: ILlamaDraftModel read FDraftModel write FDraftModel;
+    property Cache: ILlamaCache read FCache write FCache;
+
+    property OnLoadModel: TLlamaLoadModel read FOnLoadModel write FOnLoadModel;
+    property OnCompletionStream: TLlamaCompletionStream read FOnCompletionStream write FOnCompletionStream;
+    property OnChatCompletionStream: TLlamaChatCompletionStream read FOnChatCompletionStream write FOnChatCompletionStream;
+    property OnChatCompletionStreamComplete: TLlamaChatCompletionStreamComplete read FOnChatCompletionStreamComplete write FOnChatCompletionStreamComplete;
   end;
 
 implementation
@@ -350,7 +422,7 @@ begin
   FModelParams.SplitMode := FSettings.SplitMode;
   FModelParams.MainGpu := FSettings.MainGpu;
 
-  if not FSettings.RpcServers. IsEmpty() then
+  if not FSettings.RpcServers.IsEmpty() then
     FModelParams.RpcServers := PAnsiChar(UTF8Encode(FSettings.RpcServers));
 
   if Assigned(FSettings.TensorSplit) then
@@ -756,12 +828,21 @@ begin
   FSettings.Assign(Value);
 end;
 
-procedure TLlama.Init(const ATokenizer: ILlamaTokenizer;
-  const AChatHandler: ILlamaChatCompletionHandler;
-  const ADraftModel: ILlamaDraftModel; const ACache: ILlamaCache);
+procedure TLlama.Loaded;
 begin
+  inherited;
+  if not (csDesigning in ComponentState) then
+    if FAutoLoad then
+      Init();
+end;
+
+procedure TLlama.Init();
+begin
+  if Assigned(FOnLoadModel) then
+    FOnLoadModel(Self, FModelPath, FSettings);
+
   (FLlamaBase as TLlamaBase).Init(
-    FModelPath, FSettings, ATokenizer, AChatHandler, ADraftModel, ACache);
+    FModelPath, FSettings, FTokenizer, FChatHandler, FDraftModel, FCache);
 end;
 
 function TLlama.Tokenize(const AText: TBytes; const AAddSpecial,
@@ -863,10 +944,108 @@ begin
     ATokens, ASettings, ACallback, AStoppingCriteria, ALogitsProcessor, AGrammar);
 end;
 
-function TLlama.CreateChatCompletion(
-  const ASettings: TLlamaChatCompletionSettings): TCreateChatCompletionResponse;
+procedure TLlama.CreateCompletionStream(const ATokens: TArray<integer>;
+  ASettings: TLlamaCompletionSettings;
+  const AStoppingCriteria: IStoppingCriteriaList;
+  const ALogitsProcessor: ILogitsProcessorList; const AGrammar: ILlamaGrammar);
 begin
-  (FLlamaBase as ILlamaChatCompletion).CreateChatCompletion(ASettings);
+  Assert(Assigned(FOnCompletionStream), 'Event "OnCompletionStream" not assigned.');
+
+  (FLlamaBase as ILlamaCompletion).CreateCompletion(
+    ATokens, ASettings,
+    procedure(const AResponse: TCreateCompletionResponse; var AContinue: boolean)
+    begin
+      FOnCompletionStream(Self, AResponse, AContinue);
+    end,
+    AStoppingCriteria, ALogitsProcessor, AGrammar);
+end;
+
+function TLlama.CreateChatCompletion(
+  const ASettings: TLlamaChatCompletionSettings;
+  const AStoppingCriteria: IStoppingCriteriaList;
+  const ALogitsProcessor: ILogitsProcessorList;
+  const AGrammar: ILlamaGrammar): TCreateChatCompletionResponse;
+begin
+  (FLlamaBase as ILlamaChatCompletion).CreateChatCompletion(
+    ASettings, AStoppingCriteria, ALogitsProcessor);
+end;
+
+procedure TLlama.CreateChatCompletion(
+  const ASettings: TLlamaChatCompletionSettings;
+  const ACallback: TChatCompletionCallback;
+  const AStoppingCriteria: IStoppingCriteriaList;
+  const ALogitsProcessor: ILogitsProcessorList; const AGrammar: ILlamaGrammar);
+begin
+  (FLlamaBase as ILlamaChatCompletion).CreateChatCompletion(
+    ASettings, ACallback, AStoppingCriteria, ALogitsProcessor);
+end;
+
+function TLlama.CreateChatCompletionStream(
+  const ASettings: TLlamaChatCompletionSettings;
+  const AStoppingCriteria: IStoppingCriteriaList;
+  const ALogitsProcessor: ILogitsProcessorList;
+  const AGrammar: ILlamaGrammar): IAsyncResult;
+var
+  LCancelled: boolean;
+begin
+  Assert(Assigned(FOnChatCompletionStream), 'Event "OnChatCompletionStream" not assigned.');
+
+  LCancelled := false;
+
+  Result := TLlamaTaskAsyncResult.Create(
+    procedure()
+    begin
+      (FLlamaBase as ILlamaChatCompletion).CreateChatCompletion(
+        ASettings,
+        procedure(const AResponse: TChatCompletionStreamResponse; var AContinue: boolean)
+        begin
+          FOnChatCompletionStream(Self, AResponse, AContinue);
+
+          if LCancelled then
+            AContinue := false;
+        end,
+        AStoppingCriteria, ALogitsProcessor);
+    end,
+    procedure()
+    begin
+      if Assigned(FOnChatCompletionStreamComplete) then
+        FOnChatCompletionStreamComplete(Self);
+    end,
+    @LCancelled).Invoke();
+end;
+
+{ TLlama.TLlamaTaskAsyncResult }
+
+constructor TLlama.TLlamaTaskAsyncResult.Create(const ATask, ACallback: TProc;
+  const ACancelled: PBoolean);
+begin
+  FTask := ATask;
+  FCallback := ACallback;
+  FCancelled := ACancelled;
+end;
+
+procedure TLlama.TLlamaTaskAsyncResult.AsyncDispatch;
+begin
+  FTask();
+end;
+
+procedure TLlama.TLlamaTaskAsyncResult.Complete;
+begin
+  inherited;
+  if Assigned(FCallback) then
+    FCallback();
+end;
+
+function TLlama.TLlamaTaskAsyncResult.DoCancel: boolean;
+begin
+  FCancelled^ := true;
+
+  Result := true;
+end;
+
+procedure TLlama.TLlamaTaskAsyncResult.Schedule;
+begin
+  TTask.Run(DoAsyncDispatch);
 end;
 
 end.

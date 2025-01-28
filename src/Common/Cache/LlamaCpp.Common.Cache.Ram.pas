@@ -12,9 +12,11 @@ uses
 type
   TLlamaRAMCache = class(TBaseLlamaCache)
   private
+    const DEFAULT_CAPACITY = {$IFDEF WIN32}1_073_741_824{$ELSE}Int64(2) shl 30{$ENDIF WIN32};
+  private
     FCache: TOrderedDictionary<TArray<Integer>, TLlamaState>;
   public
-    constructor Create(ACapacityBytes: NativeInt = Int64(2) shl 30);
+    constructor Create(ACapacityBytes: NativeInt = DEFAULT_CAPACITY);
     destructor Destroy; override;
 
     function GetCacheSize: Int64; override;

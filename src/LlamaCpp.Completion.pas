@@ -320,7 +320,7 @@ begin
 
   if Length(LData.PromptTokens) >= FContext.NCtx() then
     raise Exception.CreateFmt(
-      'Requested tokens (%s) exceed context window of %s', [
+      'Requested tokens (%d) exceed context window of %d', [
         Length(LData.PromptTokens), TLlamaApi.Instance.llama_n_ctx(FContext)]);
 
   if ASettings.MaxTokens <= 0 then

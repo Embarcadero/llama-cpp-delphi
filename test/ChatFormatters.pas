@@ -133,7 +133,7 @@ end;
 
 procedure TChatFormattersTest.TestLlama2;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadLlama2_Chat_7B();
+  var LModelPaths := TLlamaDownload.Default.DownloadLlama2_Chat_7B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'llama-2');
@@ -141,7 +141,7 @@ end;
 
 procedure TChatFormattersTest.TestLlama3;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadLlama3_Chat_30B();
+  var LModelPaths := TLlamaDownload.Default.DownloadLlama3_Chat_30B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'llama-3');
@@ -149,7 +149,7 @@ end;
 
 procedure TChatFormattersTest.TestAlpaca;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadAlpaca_Chat_7B();
+  var LModelPaths := TLlamaDownload.Default.DownloadAlpaca_Chat_7B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'alpaca');
@@ -157,7 +157,7 @@ end;
 
 procedure TChatFormattersTest.TestQwen;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadQwen_Chat_7B();
+  var LModelPaths := TLlamaDownload.Default.DownloadQwen_Chat_7B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'qwen');
@@ -165,7 +165,7 @@ end;
 
 procedure TChatFormattersTest.TestVicuna;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadVicuna_Chat_13B();
+  var LModelPaths := TLlamaDownload.Default.DownloadVicuna_Chat_13B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'vicuna');
@@ -173,7 +173,7 @@ end;
 
 procedure TChatFormattersTest.TestMistrallite;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadMistrallite_7B();
+  var LModelPaths := TLlamaDownload.Default.DownloadMistrallite_7B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'mistrallite');
@@ -181,7 +181,7 @@ end;
 
 procedure TChatFormattersTest.TestZephyr;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadZephyr_Chat();
+  var LModelPaths := TLlamaDownload.Default.DownloadZephyr_Chat();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'zephyr');
@@ -189,7 +189,7 @@ end;
 
 procedure TChatFormattersTest.TestSaiga;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadSaiga_7B();
+  var LModelPaths := TLlamaDownload.Default.DownloadSaiga_7B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'saiga');
@@ -197,7 +197,7 @@ end;
 
 procedure TChatFormattersTest.TestGemma;
 begin
-  var LModelPaths := TSimpleDownload.Default.DownloadGemma_9B();
+  var LModelPaths := TLlamaDownload.Default.DownloadGemma_9B();
   Assert.IsNotNull(LModelPaths);
 
   TestChat(LModelPaths[0], 'gemma');

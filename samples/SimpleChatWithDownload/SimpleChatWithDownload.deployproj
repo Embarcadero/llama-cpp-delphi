@@ -1,0 +1,389 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Condition="Exists('$(BDS)\bin\CodeGear.Deployment.targets')" Project="$(BDS)\bin\CodeGear.Deployment.targets"/>
+    <ProjectExtensions>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <PropertyGroup>
+        <DeviceId Condition="'$(Platform)'=='Android'">emulator-5566</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android64'">emulator-5566</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
+        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">543F03BA-3AE0-45FD-BB2E-8ACF83C71571</DeviceId>
+    </PropertyGroup>
+    <ItemGroup Condition="'$(Platform)'=='OSX64'"/>
+    <ItemGroup Condition="'$(Platform)'=='Win32'">
+        <DeployFile Include="Win32\Debug\SimpleChatWithDownload.exe" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload.exe</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Android64'"/>
+    <ItemGroup Condition="'$(Platform)'=='Android'"/>
+    <ItemGroup Condition="'$(Platform)'=='Win64'">
+        <DeployFile Include="lib\windows_x64\ggml-rpc.dll" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml-rpc.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml-rpc.dll" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml-rpc.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml.dll" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml.dll" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\llava_shared.dll" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>llava_shared.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\llava_shared.dll" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>llava_shared.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml-cpu.dll" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml-cpu.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml-cpu.dll" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml-cpu.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\llama.dll" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>llama.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\llama.dll" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>llama.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml-base.dll" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml-base.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\windows_x64\ggml-base.dll" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>ggml-base.dll</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Win64\Debug\SimpleChatWithDownload.exe" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload.exe</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='OSXARM64'">
+        <DeployFile Include="OSXARM64\Debug\SimpleChatWithDownload.entitlements" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\..\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload.entitlements</RemoteName>
+            <DeployClass>ProjectOSXEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libllava_shared.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libllava_shared.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libllava_shared.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libllava_shared.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-rpc.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-rpc.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-rpc.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-rpc.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\Resources\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload.icns</RemoteName>
+            <DeployClass>ProjectOSXResource</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\Resources\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload.icns</RemoteName>
+            <DeployClass>ProjectOSXResource</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Debug\SimpleChatWithDownload.info.plist" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\</RemoteDir>
+            <RemoteName>Info.plist</RemoteName>
+            <DeployClass>ProjectOSXInfoPList</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libllama.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libllama.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libllama.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libllama.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-blas.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-blas.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-blas.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-blas.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="C:\Program Files (x86)\Embarcadero\Studio\23.0\binosx64\libcgsqlite3.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libcgsqlite3.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="C:\Program Files (x86)\Embarcadero\Studio\23.0\binosx64\libcgsqlite3.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libcgsqlite3.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Release\SimpleChatWithDownload.info.plist" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\</RemoteDir>
+            <RemoteName>Info.plist</RemoteName>
+            <DeployClass>ProjectOSXInfoPList</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Debug\SimpleChatWithDownload" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-metal.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-metal.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-metal.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-metal.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-base.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-base.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-base.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-base.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-cpu.dylib" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-cpu.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="lib\macos_arm64\libggml-cpu.dylib" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libggml-cpu.dylib</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Release\SimpleChatWithDownload" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Release\SimpleChatWithDownload.entitlements" Condition="'$(Config)'=='Release'">
+            <RemoteDir>SimpleChatWithDownload.app\..\</RemoteDir>
+            <RemoteName>SimpleChatWithDownload.entitlements</RemoteName>
+            <DeployClass>ProjectOSXEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
+    <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'"/>
+    <ItemGroup Condition="'$(Platform)'=='Win64x'"/>
+    <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
+</Project>

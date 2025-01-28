@@ -56,28 +56,46 @@ type
   public
     constructor Create(const ANGpuLayers: Integer = 0;
       const ASplitMode: TLlamaSplitMode = TLlamaSplitMode.LLAMA_SPLIT_MODE_LAYER;
-      const AMainGpu: Int32 = 0; const ATensorSplit: TArray<Single> = nil;
-      const ARpcServers: string = ''; const AVocabOnly: Boolean = False;
-      const AUseMMap: Boolean = True; const AUseMLock: Boolean = False;
+      const AMainGpu: Int32 = 0;
+      const ATensorSplit: TArray<Single> = nil;
+      const ARpcServers: string = '';
+      const AVocabOnly: Boolean = False;
+      const AUseMMap: Boolean = True;
+      const AUseMLock: Boolean = False;
       const AKVOverrides: TArray<TPair<string, Variant>> = nil;
       const ASeed: UInt32 = LlamaCpp.CType.Llama.TLlama.LLAMA_DEFAULT_SEED;
-      const ANCtx: Integer = 512; const ANBatch: Integer = 512;
-      const ANUBatch: Integer = 512; const ANThreads: Integer = 0;
+      const ANCtx: Integer = 512;
+      const ANBatch: Integer = 512;
+      const ANUBatch: Integer = 512;
+      const ANThreads: Integer = 0;
       const ANThreadsBatch: Integer = 0;
       const ARopeScalingType: TLlamaRopeScalingType = TLlamaRopeScalingType.LLAMA_ROPE_SCALING_TYPE_UNSPECIFIED;
       const APoolingType: TLlamaPoolingType = TLlamaPoolingType.LLAMA_POOLING_TYPE_UNSPECIFIED;
-      const ARopeFreqBase: Single = 0.0; const ARopeFreqScale: Single = 0.0;
-      const AYarnExtFactor: Single = -1.0; const AYarnAttnFactor: Single = 1.0;
-      const AYarnBetaFast: Single = 32.0; const AYarnBetaSlow: Single = 1.0;
-      const AYarnOrigCtx: Integer = 0; const ALogitsAll: Boolean = False;
-      const AEmbeddings: Boolean = False; const AOffloadKQV: Boolean = True;
-      const AFlashAttn: Boolean = False; const ALastNTokensSize: Integer = 64;
-      const ALoraBase: string = ''; const ALoraScale: Single = 1.0;
-      const ALoraPath: string = ''; const ANUMA: TGGMLNumaStrategy = TGGMLNumaStrategy.GGML_NUMA_STRATEGY_DISABLED;
-      const AChatFormat: string = ''; const ATypeK: TGGMLType = TGGMLType.GGML_TYPE_F32;
-      const ATypeV: TGGMLType = TGGMLType.GGML_TYPE_F32; const ASPMInfill: Boolean = False;
+      const ARopeFreqBase: Single = 0.0;
+      const ARopeFreqScale: Single = 0.0;
+      const AYarnExtFactor: Single = -1.0;
+      const AYarnAttnFactor: Single = 1.0;
+      const AYarnBetaFast: Single = 32.0;
+      const AYarnBetaSlow: Single = 1.0;
+      const AYarnOrigCtx: Integer = 0;
+      const ALogitsAll: Boolean = False;
+      const AEmbeddings: Boolean = False;
+      const AOffloadKQV: Boolean = True;
+      const AFlashAttn: Boolean = False;
+      const ALastNTokensSize: Integer = 64;
+      const ALoraBase: string = '';
+      const ALoraScale: Single = 1.0;
+      const ALoraPath: string = '';
+      const ANUMA: TGGMLNumaStrategy = TGGMLNumaStrategy.GGML_NUMA_STRATEGY_DISABLED;
+      const AChatFormat: string = '';
+      const ATypeK: TGGMLType = TGGMLType.GGML_TYPE_F32;
+      const ATypeV: TGGMLType = TGGMLType.GGML_TYPE_F32;
+      const ASPMInfill: Boolean = False;
       const AVerbose: Boolean = True);
 
+    // Override Assign method
+    procedure Assign(Source: TPersistent); override;
+  published
     // Properties
     property NGpuLayers: Integer read FNGpuLayers write FNGpuLayers;
     property SplitMode: TLlamaSplitMode read FSplitMode write FSplitMode;
@@ -117,9 +135,6 @@ type
     property TypeV: TGGMLType read FTypeV write FTypeV;
     property SPMInfill: Boolean read FSPMInfill write FSPMInfill;
     property Verbose: Boolean read FVerbose write FVerbose;
-
-    // Override Assign method
-    procedure Assign(Source: TPersistent); override;
   end;
 
   TLlamaSamplerSettings = record

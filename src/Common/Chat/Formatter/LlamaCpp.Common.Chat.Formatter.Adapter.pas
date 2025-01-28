@@ -39,14 +39,16 @@ type
     procedure ConvertTextCompletionChunksToChat(
       [ref] AConversionData: TConversionData;
       const ACompletion: TCreateCompletionStreamResponse;
-      const ACallback: TChatCompletionCallback);
+      const ACallback: TChatCompletionCallback;
+        var AContinue: boolean);
 
     function ConvertCompletionToChat(
       const ACompletion: TCreateCompletionResponse): TCreateChatCompletionResponse; overload;
     procedure ConvertCompletionToChat(
       [ref] AConversionData: TConversionData;
       const ACompletion: TCreateCompletionStreamResponse;
-      const ACallback: TChatCompletionCallback); overload;
+      const ACallback: TChatCompletionCallback;
+        var AContinue: boolean); overload;
 
     function ConvertCompletionToChatFunction(const AToolName: string;
       const ACompletion: TCreateCompletionResponse): TCreateChatCompletionResponse; overload;
@@ -182,13 +184,12 @@ end;
 procedure TChatFormaterAdapter.ConvertTextCompletionChunksToChat(
   [ref] AConversionData: TConversionData;
   const ACompletion: TCreateCompletionStreamResponse;
-  const ACallback: TChatCompletionCallback);
+  const ACallback: TChatCompletionCallback;
+  var AContinue: boolean);
 var
-  LContinue: boolean;
   LResponse: TCreateChatCompletionStreamResponse;
   LContent: variant;
 begin
-  LContinue := true;
   if AConversionData.First then
   begin
     LResponse := TCreateChatCompletionStreamResponse.Create(
@@ -213,7 +214,7 @@ begin
 
     AConversionData.First := false;
 
-    ACallback(LResponse, LContinue);
+    ACallback(LResponse, AContinue);
   end;
 
   if ACompletion.Choices[0].FinishReason.IsEmpty() then
@@ -241,7 +242,7 @@ begin
     ]
   );
 
-  ACallback(LResponse, LContinue);
+  ACallback(LResponse, AContinue);
 end;
 
 function TChatFormaterAdapter.ConvertTextCompletionToChat(
@@ -278,9 +279,11 @@ end;
 procedure TChatFormaterAdapter.ConvertCompletionToChat(
   [ref] AConversionData: TConversionData;
   const ACompletion: TCreateCompletionStreamResponse;
-  const ACallback: TChatCompletionCallback);
+  const ACallback: TChatCompletionCallback;
+  var AContinue: boolean);
 begin
-  ConvertTextCompletionChunksToChat(AConversionData, ACompletion, ACallback);
+  ConvertTextCompletionChunksToChat(
+    AConversionData, ACompletion, ACallback, AContinue);
 end;
 
 function TChatFormaterAdapter.ConvertCompletionToChatFunction(
@@ -602,7 +605,8 @@ begin
         ConvertCompletionToChatFunction(
           LTool.&Function.Name, LConversionData, AResponse, ACallback)
       else
-        ConvertCompletionToChat(LConversionData, AResponse, ACallback);
+        ConvertCompletionToChat(
+          LConversionData, AResponse, ACallback, AContinue);
 
     end, AStoppingCriteria, ALogitsProcessor, AGrammar);
 

@@ -92,7 +92,7 @@ class constructor THighLevelApiTest.Create;
 var
   LModel: TArray<string>;
 begin
-  LModel := TSimpleDownload.Default.DownloadLlama2_Chat_7B();
+  LModel := TLlamaDownload.Default.DownloadLlama2_Chat_7B();
 
   if not Assigned(LModel) then
     raise Exception.Create('Unable to run tests due to unavailable model.');

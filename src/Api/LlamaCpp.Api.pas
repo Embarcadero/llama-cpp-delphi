@@ -84,7 +84,7 @@ const
 {$ELSEIF DEFINED(OSX64)}
   LIB_LLAMA = 'libllama.dylib';
   LIB_GGML = 'libggml.dylib';
-  LIB_LAVA = 'libllava.dylib';
+  LIB_LAVA = 'libllava_shared.dylib';
 {$ELSE}
   LIB_LLAMA = 'libllama.so';
   LIB_GGML = 'libggml.so';
