@@ -8,8 +8,8 @@ Welcome to **llama-cpp-delphi**, the Delphi bindings for [llama.cpp](https://git
 - **Local Inference**: No external servers or APIs required—your data stays local.
 - **Cross-Platform Support**: Compatible with Windows, Linux, and Mac.
   - 🖥️ **Mac Silicon**: GPU (MPS) and CPU inference supported.
-  - 💻 **Windows**: CPU inference supported, with options for CUDA, Vulkan, HIP, Kompute, and OpenBLAS.
-  - 🌏 **Linux**: CPU inference supported, with options for CUDA, Vulkan, HIP, and MUSA.
+  - 💻 **Windows**: CPU inference supported, with options for CUDA, Vulkan, Kompute, and OpenBLAS.
+  - 🌏 **Linux**: CPU inference supported, with options for CUDA, Vulkan, Kompute, and OpenBLAS.
   - 🚀 **Android and iOS support coming soon!**
 - **Pre-Built Libraries**: Simplified setup with pre-compiled libraries.
 - **Customizable Sampling**: Fine-tune your AI’s behavior with easy-to-configure samplers.
