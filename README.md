@@ -36,7 +36,66 @@ Welcome to **llama-cpp-delphi**, the Delphi bindings for [llama.cpp](https://git
 
 ### Libraries
 
-The necessary **llama.cpp** libraries are distributed as part of the releases of this repository. You can find them under the "Release" section in the repository.
+The necessary **llama.cpp** libraries are distributed as part of the releases of this repository. You can find them under the "Release" section in the repository. Here's an explanation of the libraries available:
+
+#### CPU Build
+
+CPU-only builds for Windows, Linux, and macOS. Inference runs slow on CPU—consider using a GPU-based library.
+
+#### BLAS Build
+
+Building the program with BLAS support may lead to some performance improvements in prompt processing using batch sizes higher than 32 (the default is 512). Using BLAS doesn't affect the generation performance. There are several different BLAS implementations available for build and use:
+
+- **Accelerate Framework**: Available on macOS, enabled by default.
+- **OpenBLAS**: Provides CPU-based BLAS acceleration. Ensure OpenBLAS is installed on your machine.
+- **BLIS**: A high-performance portable BLAS framework. [Learn more](https://github.com/flame/blis).
+- **Intel oneMKL**: Optimized for Intel processors, supporting advanced instruction sets like avx\_vnni.
+
+#### SYCL
+
+SYCL is a higher-level programming model to improve programming productivity on various hardware accelerators.
+
+llama.cpp based on SYCL is used to **support Intel GPU** (Data Center Max series, Flex series, Arc series, Built-in GPU and iGPU).
+
+For detailed info, please refer to [[llama.cpp for SYCL](./backend/SYCL.md)](https://github.com/ggerganov/llama.cpp/blob/master/docs/backend/SYCL.md).
+
+#### Metal Build
+
+On MacOS, Metal is enabled by default. Using Metal makes the computation run on the GPU.
+
+When built with Metal support, you can explicitly disable GPU inference with the `--n-gpu-layers 0` option in the Llama settings.
+
+#### CUDA
+
+Provides GPU acceleration using an NVIDIA GPU. [Refer to the CUDA guide](https://github.com/ggerganov/llama.cpp/blob/master/docs/cuda-fedora.md) for Fedora setup.
+
+#### Vulkan
+
+Vulkan provides GPU acceleration through a modern, low-overhead API. To use Vulkan:
+
+* Ensure Vulkan is installed and supported by your GPU drivers.
+
+Learn more at the [official Vulkan site](https://vulkan.org).
+
+#### Kompute
+
+Kompute offers efficient compute operations for GPU workloads. It's designed for AI inference tasks and works seamlessly with Vulkan.
+
+#### CANN
+
+Provides NPU acceleration using the AI cores of Ascend NPUs. [Learn more about CANN](https://www.hiascend.com/en/software/cann).
+
+#### SYCL
+
+SYCL enables GPU acceleration on Intel GPUs. Refer to the [SYCL documentation](https://github.com/ggerganov/llama.cpp/blob/master/docs/backend/SYCL.md) for setup details.
+
+#### HIP
+
+Supports GPU acceleration on AMD GPUs compatible with HIP.
+
+#### MUSA
+
+Provides GPU acceleration using the MUSA cores of Moore Threads MTT GPUs.
 
 ## 🌟 Using llama-cpp-delphi
 
