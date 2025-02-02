@@ -4,6 +4,12 @@ Experience the power of local inference! This app runs a Large Language Model (L
 
 **SimpleChatWithDownload** is an exciting sample project from the **llama-cpp-delphi** bindings. This app provides a streamlined way to interact with a local LLM (Large Language Model) in a sleek chat interface, featuring automatic model downloads. Whether you’re using Mac Silicon for blazing-fast GPU inference or Windows for a **SLOW** CPU inference, this sample is a great way to get started! 🎉
 
+
+
+https://github.com/user-attachments/assets/16582374-4c12-43bd-aff8-6c4ad4f41339
+
+
+
 ## 🌟 Features
 
 - **Interactive Chat Window**: Start chatting with your local LLM in seconds!
