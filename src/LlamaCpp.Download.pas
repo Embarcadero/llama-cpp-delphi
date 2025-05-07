@@ -9,6 +9,17 @@ uses
 type
   TWriteData = procedure(Sender: TObject; const AText: string) of object;
 
+  THuggingFace = class(TPersistent)
+  private
+    FUserName: string;
+    FToken: string;
+  public
+    function BuildUrl(const AUri: string): string;
+  published
+    property UserName: string read FUserName write FUserName;
+    property Token: string read FToken write FToken;
+  end;
+
   [ComponentPlatforms(pfidWindows or pfidOSX or pfidLinux)]
   TLlamaDownload = class(TComponent)
   public
@@ -16,8 +27,10 @@ type
   private
     FRoot: string;
     FOnWriteData: TWriteData;
+    FHuggingFace: THuggingFace;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy(); override;
 
     class constructor Create();
     class destructor Destroy();
@@ -65,8 +78,13 @@ type
     /// Default model: Gemma-The-Writer-Mighty-Sword-9B-D_AU-Q4_k_m.gguf - Size: 5.64 GB
     ///</summary>
     function DownloadGemma_9B(AFiles: TArray<string> = nil): TArray<string>;
+    /// <summary>
+    /// Default model: tinyllama-1.1b-chat-v1.0.Q4_K_S.gguf - Size: 644 MB
+    ///</summary>
+    function DownloadTinyLlama_1_1B(AFiles: TArray<string> = nil): TArray<string>;
   published
     property Root: string read FRoot write FRoot;
+    property HuggingFace: THuggingFace read FHuggingFace;
     property OnWriteData: TWriteData read FOnWriteData write FOnWriteData;
   end;
 
@@ -229,6 +247,12 @@ begin
   inherited Create(AOwner);
   if not (csDesigning in ComponentState) then
     FRoot := TPath.GetDownloadsPath();
+  FHuggingFace := THuggingFace.Create();
+end;
+
+destructor TLlamaDownload.Destroy;
+begin
+  FHuggingFace.Destroy();
 end;
 
 class constructor TLlamaDownload.Create;
@@ -244,6 +268,7 @@ end;
 function TLlamaDownload.Download(const AUrl, ARepoName: string;
   const ABranch: string; const AFiles: TArray<string>): TArray<string>;
 const
+  GIT_LFS_INSTALL = 'git lfs install';
   GIT_CLONE_POINTERS_TEMPLATE = 'git clone %s';
   GIT_CHECKOUT_BRANCH_TEMPLATE = 'git checkout %s';
   GIT_FETCH_POINTERS_TEMPLATE = 'git lfs fetch --include="%s"';
@@ -269,6 +294,11 @@ begin
     end;
 
   // Clone large files pointers only
+  RunGitCommand(
+    GIT_LFS_INSTALL,
+    LModelsPath,
+    LWriteCallback);
+
   RunGitCommand(
     String.Format(GIT_CLONE_POINTERS_TEMPLATE, [AUrl]),
     LModelsPath,
@@ -418,10 +448,34 @@ begin
     AFiles := ['Gemma-The-Writer-Mighty-Sword-9B-D_AU-Q4_k_m.gguf'];
 
   Result := Download(
-    'https://huggingface.co/DavidAU/Gemma-The-Writer-Mighty-Sword-9B-GGUF',
+    FHuggingFace.BuildUrl('DavidAU/Gemma-The-Writer-Mighty-Sword-9B-GGUF'),
     'Gemma-The-Writer-Mighty-Sword-9B-GGUF',
     String.Empty,
     AFiles);
+end;
+
+function TLlamaDownload.DownloadTinyLlama_1_1B(
+  AFiles: TArray<string>): TArray<string>;
+begin
+  //TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF
+   if not Assigned(AFiles) then
+    AFiles := ['tinyllama-1.1b-chat-v1.0.Q4_K_S.gguf'];
+
+  Result := Download(
+    FHuggingFace.BuildUrl('TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF'),
+    'TinyLlama-1.1B-Chat-v1.0-GGUF',
+    String.Empty,
+    AFiles);
+end;
+
+{ THuggingFace }
+
+function THuggingFace.BuildUrl(const AUri: string): string;
+begin
+  var LAuth := String.Empty;
+  if not FUserName.IsEmpty() and not FToken.IsEmpty() then
+    LAuth := String.Format('%s:%s@', [FUserName, FToken]);
+  Result := String.Format('https://%shuggingface.co/%s', [LAuth, AUri])
 end;
 
 end.

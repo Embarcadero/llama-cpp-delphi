@@ -36,6 +36,13 @@ type
     switchCPUGPU: TSwitch;
     lbCPU: TLabel;
     lbGPU: TLabel;
+    lblHuggingFaceAuth: TLabel;
+    layHFUserName: TLayout;
+    lblHFUserName: TLabel;
+    layHFToken: TLayout;
+    lblHFToken: TLabel;
+    edtHFToken: TEdit;
+    edtHFUserName: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure Llama1ChatCompletionStreamComplete(Sender: TObject);
     procedure Llama1ChatCompletionStream(Sender: TObject;
@@ -47,6 +54,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure MultiView1StartHiding(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormSaveState(Sender: TObject);
   private
     FStatus: byte; // 0 - idle/cancelling 1 - generating
     FChatMessages: TArray<TChatCompletionRequestMessage>;
@@ -93,6 +101,29 @@ begin
       'You''re a master in the Delphi programming language,')];
 
   FDownloadForm := TFormDownload.Create(Self);
+
+  if SaveState.Stream.Size > 0 then begin
+    var LReader := TBinaryReader.Create(SaveState.Stream);
+    try
+      edtHFUserName.Text := LReader.ReadString();
+      edtHFToken.Text := LReader.ReadString();
+    finally
+      LReader.Free();
+    end;
+  end;
+end;
+
+procedure TFormMain.FormSaveState(Sender: TObject);
+begin
+  SaveState.Stream.Clear();
+
+  var LWriter := TBinaryWriter.Create(SaveState.Stream);
+  try
+    LWriter.Write(edtHFUserName.Text);
+    LWriter.Write(edtHFToken.Text);
+  finally
+    LWriter.Free();
+  end;
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -156,6 +187,9 @@ begin
   if not cbModel.Enabled then
     Exit;
 
+  // HF Auth
+  FDownloadForm.HFAuth(edtHFUserName.Text, edtHFToken.Text);
+
   Llama1.Settings.NCtx := Trunc(nbContextLength.Value);
   if switchCPUGPU.IsChecked then
     Llama1.Settings.NGpuLayers := -1
@@ -174,6 +208,10 @@ begin
     2: begin
       FDownloadForm.DownloadAndPrepareMistralLite(Llama1);
       Caption := Caption + ' (MistralLite)';
+    end;
+    3: begin
+      FDownloadForm.DownloadAndPrepareTinyLlama(Llama1);
+      Caption := Caption + ' (TinyLlama)';
     end
     else raise Exception.Create('Select a model.');
   end;

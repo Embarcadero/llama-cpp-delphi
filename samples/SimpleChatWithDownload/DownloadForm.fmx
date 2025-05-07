@@ -22,8 +22,8 @@ object FormDownload: TFormDownload
     Size.Height = 280.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    Viewport.Width = 396.000000000000000000
-    Viewport.Height = 276.000000000000000000
+    Viewport.Width = 400.000000000000000000
+    Viewport.Height = 280.000000000000000000
   end
   object LlamaDownload1: TLlamaDownload
     OnWriteData = LlamaDownload1WriteData

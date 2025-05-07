@@ -15,9 +15,13 @@ type
 
     procedure Download(const ALlama: TLlama; const ATask: TFunc<string>);
   public
+    // HF Auth
+    procedure HFAuth(const AUserName, AToken: string);
+
     procedure DownloadAndPrepareLlama2(const ALlama: TLlama);
     procedure DownloadAndPrepareLlama3(const ALlama: TLlama);
     procedure DownloadAndPrepareMistralLite(const ALlama: TLlama);
+    procedure DownloadAndPrepareTinyLlama(const ALlama: TLlama);
   end;
 
 var
@@ -40,22 +44,27 @@ begin
     + sLineBreak + sLineBreak);
 
   TTask.Run(procedure() begin
-    ALlama.ModelPath := ATask;
+    try
+      ALlama.ModelPath := ATask;
 
-    TThread.Queue(nil, procedure() begin
-      memoDownload.Lines.Add('Loading...');
-    end);
+      TThread.Queue(nil, procedure() begin
+        memoDownload.Lines.Add('Loading...');
+      end);
 
-    ALlama.Init();
+      ALlama.Init();
 
-    TThread.Queue(nil, procedure() begin
-      memoDownload.Lines.Add(String.Empty);
-      memoDownload.Lines.Add('All done!');
-    end);
+      TThread.Queue(nil, procedure() begin
+        memoDownload.Lines.Add(String.Empty);
+        memoDownload.Lines.Add('All done!');
+      end);
 
-    TThread.ForceQueue(nil, procedure() begin
-      Self.Close();
-    end, 500);
+      TThread.ForceQueue(nil, procedure() begin
+        Self.Close();
+      end, 500);
+    except
+      on E: Exception do
+        Application.ShowException(E);
+    end;
   end);
 
   Self.ShowModal();
@@ -95,6 +104,21 @@ begin
   TThread.Queue(nil, procedure() begin
     MemoDownload.Lines.Text := MemoDownload.Lines.Text + AText;
   end);
+end;
+
+procedure TFormDownload.DownloadAndPrepareTinyLlama(const ALlama: TLlama);
+begin
+  ALlama.Settings.ChatFormat := 'zephyr';
+
+  Download(ALlama, function(): string begin
+    Result := LlamaDownload1.DownloadTinyLlama_1_1B()[0];
+  end);
+end;
+
+procedure TFormDownload.HFAuth(const AUserName, AToken: string);
+begin
+  LLamaDownload1.HuggingFace.UserName := AUserName;
+  LLamaDownload1.HuggingFace.Token := AToken;
 end;
 
 end.

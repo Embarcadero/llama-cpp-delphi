@@ -16,6 +16,7 @@ object FormMain: TFormMain
   OnCreate = FormCreate
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
+  OnSaveState = FormSaveState
   DesignerMasterStyle = 1
   object StyleBook1: TStyleBook
     Styles = <
@@ -1030,7 +1031,7 @@ object FormMain: TFormMain
       Size.Width = 250.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      TabOrder = 6
       object lbMenuHeader: TLabel
         Align = Client
         Size.Width = 250.000000000000000000
@@ -1047,7 +1048,7 @@ object FormMain: TFormMain
       Size.Width = 250.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 1
+      TabOrder = 0
       object lbModel: TLabel
         Align = Top
         Margins.Left = 5.000000000000000000
@@ -1056,14 +1057,15 @@ object FormMain: TFormMain
         Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
         Text = 'Select a model:'
-        TabOrder = 0
+        TabOrder = 1
       end
       object cbModel: TComboBox
         Align = Top
         Items.Strings = (
           'Llama 2 (~4 GB)'
           'Llama 3 (~5 GB)'
-          'Mistral Lite (~7 GB)')
+          'Mistral Lite (~7 GB)'
+          'TinyLlama (~1 GB)')
         Margins.Left = 5.000000000000000000
         Margins.Top = 5.000000000000000000
         Margins.Right = 5.000000000000000000
@@ -1072,7 +1074,7 @@ object FormMain: TFormMain
         Size.Width = 240.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 1
+        TabOrder = 0
       end
     end
     object layContextLength: TLayout
@@ -1081,7 +1083,7 @@ object FormMain: TFormMain
       Size.Width = 250.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 1
       object lblContextLength: TLabel
         Align = Top
         Margins.Left = 5.000000000000000000
@@ -1090,12 +1092,12 @@ object FormMain: TFormMain
         Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
         Text = 'Context Length:'
-        TabOrder = 0
+        TabOrder = 1
       end
       object nbContextLength: TNumberBox
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         Align = Top
-        TabOrder = 1
+        TabOrder = 0
         Cursor = crIBeam
         Max = 4096.000000000000000000
         Value = 4096.000000000000000000
@@ -1115,7 +1117,7 @@ object FormMain: TFormMain
       Size.Width = 250.000000000000000000
       Size.Height = 21.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 2
       object cbSeed: TCheckBox
         Align = Top
         IsChecked = True
@@ -1135,7 +1137,7 @@ object FormMain: TFormMain
       Size.Width = 250.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
+      TabOrder = 3
       object switchCPUGPU: TSwitch
         Align = Client
         IsChecked = True
@@ -1143,7 +1145,7 @@ object FormMain: TFormMain
         Margins.Top = 8.000000000000000000
         Margins.Right = 10.000000000000000000
         Margins.Bottom = 8.000000000000000000
-        Size.Width = 132.000000000000000000
+        Size.Width = 131.333343505859400000
         Size.Height = 24.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
@@ -1151,7 +1153,7 @@ object FormMain: TFormMain
       object lbCPU: TLabel
         Align = Left
         AutoSize = True
-        Size.Width = 49.000000000000000000
+        Size.Width = 49.333332061767580000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TextSettings.HorzAlign = Center
@@ -1161,13 +1163,87 @@ object FormMain: TFormMain
       object lbGPU: TLabel
         Align = Right
         AutoSize = True
-        Position.X = 201.000000000000000000
-        Size.Width = 49.000000000000000000
+        Position.X = 200.666671752929700000
+        Size.Width = 49.333328247070310000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TextSettings.HorzAlign = Center
         Text = 'GPU'
         TabOrder = 1
+      end
+    end
+    object lblHuggingFaceAuth: TLabel
+      Align = Top
+      Margins.Top = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.Y = 206.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      Text = 'HuggingFace Authentication'
+      TabOrder = 7
+    end
+    object layHFUserName: TLayout
+      Align = Top
+      Position.Y = 228.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      object lblHFUserName: TLabel
+        Align = Top
+        Margins.Left = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Size.Width = 245.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'User Name:'
+        TabOrder = 0
+      end
+      object edtHFUserName: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Top
+        TabOrder = 1
+        Position.X = 5.000000000000000000
+        Position.Y = 22.000000000000000000
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Size.Width = 240.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+    object layHFToken: TLayout
+      Align = Top
+      Position.Y = 278.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      object lblHFToken: TLabel
+        Align = Top
+        Margins.Left = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Size.Width = 245.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Token:'
+        TabOrder = 0
+      end
+      object edtHFToken: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Top
+        TabOrder = 1
+        Position.X = 5.000000000000000000
+        Position.Y = 22.000000000000000000
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Size.Width = 240.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
       end
     end
   end
